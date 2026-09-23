@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Portal - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 40px 30px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #999;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-btn:hover {
+            color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .forgot-password {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 13px;
+        }
+
+        .forgot-password a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password a:hover {
+            color: #764ba2;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .signup-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        .signup-link a:hover {
+            color: #764ba2;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                max-width: 100%;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .form-container {
+                padding: 30px 20px;
+            }
+
+            .tab-buttons {
+                margin-bottom: 25px;
+            }
+
+            .tab-btn {
+                font-size: 12px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-card">
+            <div class="header">
+                <h1>🎓 COLLEGE PORTAL</h1>
+                <p>Your Gateway to Academic Excellence</p>
+            </div>
+
+            <div class="form-container">
+                <div class="success-message" id="successMessage"></div>
+
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="switchTab('student')">Student</button>
+                    <button class="tab-btn" onclick="switchTab('faculty')">Faculty</button>
+                    <button class="tab-btn" onclick="switchTab('admin')">Admin</button>
+                </div>
+
+                <!-- Student Login -->
+                <div class="tab-content active" id="student">
+                    <form onsubmit="handleStudentLogin(event)">
+                        <div class="form-group">
+                            <label for="studentId">Student ID / Email</label>
+                            <input type="text" id="studentId" name="studentId" placeholder="Enter your ID or email" required>
+                            <div class="error-message" id="studentIdError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="studentPassword">Password</label>
+                            <input type="password" id="studentPassword" name="studentPassword" placeholder="Enter your password" required>
+                            <div class="error-message" id="studentPasswordError"></div>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="rememberStudent" name="rememberStudent">
+                            <label for="rememberStudent">Remember me</label>
+                        </div>
+
+                        <div class="forgot-password">
+                            <a href="#forgot">Forgot Password?</a>
+                            <span id="studentLoginAttempt" style="color: #999;"></span>
+                        </div>
+
+                        <button type="submit" class="login-btn">Login</button>
+                    </form>
+
+                    <div class="signup-link">
+                        Don't have an account? <a href="#signup">Register Now</a>
+                    </div>
+                </div>
+
+                <!-- Faculty Login -->
+                <div class="tab-content" id="faculty">
+                    <form onsubmit="handleFacultyLogin(event)">
+                        <div class="form-group">
+                            <label for="facultyId">Faculty ID / Email</label>
+                            <input type="email" id="facultyId" name="facultyId" placeholder="Enter your email" required>
+                            <div class="error-message" id="facultyIdError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="facultyPassword">Password</label>
+                            <input type="password" id="facultyPassword" name="facultyPassword" placeholder="Enter your password" required>
+                            <div class="error-message" id="facultyPasswordError"></div>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="rememberFaculty" name="rememberFaculty">
+                            <label for="rememberFaculty">Remember me</label>
+                        </div>
+
+                        <div class="forgot-password">
+                            <a href="#forgot">Forgot Password?</a>
+                            <span id="facultyLoginAttempt" style="color: #999;"></span>
+                        </div>
+
+                        <button type="submit" class="login-btn">Login</button>
+                    </form>
+
+                    <div class="signup-link">
+                        New faculty? <a href="#contact">Contact Administration</a>
+                    </div>
+                </div>
+
+                <!-- Admin Login -->
+                <div class="tab-content" id="admin">
+                    <form onsubmit="handleAdminLogin(event)">
+                        <div class="form-group">
+                            <label for="adminUsername">Username</label>
+                            <input type="text" id="adminUsername" name="adminUsername" placeholder="Enter admin username" required>
+                            <div class="error-message" id="adminUsernameError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adminPassword">Password</label>
+                            <input type="password" id="adminPassword" name="adminPassword" placeholder="Enter your password" required>
+                            <div class="error-message" id="adminPasswordError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="securityCode">Security Code</label>
+                            <input type="text" id="securityCode" name="securityCode" placeholder="Enter 6-digit security code" maxlength="6" required>
+                            <div class="error-message" id="securityCodeError"></div>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="rememberAdmin" name="rememberAdmin">
+                            <label for="rememberAdmin">Remember me</label>
+                        </div>
+
+                        <div class="forgot-password">
+                            <a href="#security">Reset Security Code</a>
+                            <span id="adminLoginAttempt" style="color: #999;"></span>
+                        </div>
+
+                        <button type="submit" class="login-btn">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        function switchTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from all buttons
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab and mark button as active
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Student Login Handler
+        function handleStudentLogin(e) {
+            e.preventDefault();
+            const studentId = document.getElementById('studentId').value.trim();
+            const password = document.getElementById('studentPassword').value;
+
+            // Clear previous errors
+            clearErrors(['studentIdError', 'studentPasswordError']);
+
+            let isValid = true;
+
+            // Validation
+            if (!studentId) {
+                showError('studentIdError', 'Student ID or Email is required');
+                isValid = false;
+            } else if (!isValidEmail(studentId) && !isValidStudentId(studentId)) {
+                showError('studentIdError', 'Enter a valid email or Student ID');
+                isValid = false;
+            }
+
+            if (!password || password.length < 6) {
+                showError('studentPasswordError', 'Password must be at least 6 characters');
+                isValid = false;
+            }
+
+            if (isValid) {
+                showSuccess('Student login successful! Redirecting...');
+                setTimeout(() => {
+                    alert('Welcome! Redirecting to dashboard...');
+                    // window.location.href = '/student-dashboard';
+                }, 1000);
+            }
+        }
+
+        // Faculty Login Handler
+        function handleFacultyLogin(e) {
+            e.preventDefault();
+            const facultyId = document.getElementById('facultyId').value.trim();
+            const password = document.getElementById('facultyPassword').value;
+
+            clearErrors(['facultyIdError', 'facultyPasswordError']);
+
+            let isValid = true;
+
+            if (!facultyId || !isValidEmail(facultyId)) {
+                showError('facultyIdError', 'Enter a valid email address');
+                isValid = false;
+            }
+
+            if (!password || password.length < 6) {
+                showError('facultyPasswordError', 'Password must be at least 6 characters');
+                isValid = false;
+            }
+
+            if (isValid) {
+                showSuccess('Faculty login successful! Redirecting...');
+                setTimeout(() => {
+                    alert('Welcome! Redirecting to dashboard...');
+                    // window.location.href = '/faculty-dashboard';
+                }, 1000);
+            }
+        }
+
+        // Admin Login Handler
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            const securityCode = document.getElementById('securityCode').value.trim();
+
+            clearErrors(['adminUsernameError', 'adminPasswordError', 'securityCodeError']);
+
+            let isValid = true;
+
+            if (!username || username.length < 3) {
+                showError('adminUsernameError', 'Username must be at least 3 characters');
+                isValid = false;
+            }
+
+            if (!password || password.length < 8) {
+                showError('adminPasswordError', 'Admin password must be at least 8 characters');
+                isValid = false;
+            }
+
+            if (!securityCode || securityCode.length !== 6 || isNaN(securityCode)) {
+                showError('securityCodeError', 'Enter a valid 6-digit security code');
+                isValid = false;
+            }
+
+            if (isValid) {
+                showSuccess('Admin login successful! Redirecting...');
+                setTimeout(() => {
+                    alert('Welcome Admin! Redirecting to dashboard...');
+                    // window.location.href = '/admin-dashboard';
+                }, 1000);
+            }
+        }
+
+        // Validation helpers
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function isValidStudentId(id) {
+            // Assuming Student ID is alphanumeric and 6-10 characters
+            const idRegex = /^[A-Za-z0-9]{6,10}$/;
+            return idRegex.test(id);
+        }
+
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+        }
+
+        function clearErrors(errorIds) {
+            errorIds.forEach(id => {
+                const element = document.getElementById(id);
+                element.textContent = '';
+                element.classList.remove('show');
+            });
+        }
+
+        function showSuccess(message) {
+            const successElement = document.getElementById('successMessage');
+            successElement.textContent = message;
+            successElement.classList.add('show');
+            setTimeout(() => {
+                successElement.classList.remove('show');
+            }, 3000);
+        }
+
+        // Remember me functionality
+        window.addEventListener('load', () => {
+            if (localStorage.getItem('rememberStudent')) {
+                document.getElementById('rememberStudent').checked = true;
+            }
+            if (localStorage.getItem('rememberFaculty')) {
+                document.getElementById('rememberFaculty').checked = true;
+            }
+        });
+    </script>
+</body>
+</html>
